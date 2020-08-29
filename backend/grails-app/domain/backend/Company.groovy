@@ -4,8 +4,12 @@ class Company {
 
     String name 
     String segment
-    def stocks = []
-    // static hasMany = [stocks: Stock]
+    static hasMany = [stocks: Stock]
+
+    static constraints = {
+        name size:  blank: false, unique: true
+        segment size: blank: false
+    }
 }
 
 
