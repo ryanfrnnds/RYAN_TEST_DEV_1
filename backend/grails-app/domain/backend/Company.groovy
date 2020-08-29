@@ -7,8 +7,8 @@ class Company {
     static hasMany = [stocks: Stock]
 
     static constraints = {
-        name size:  blank: false, unique: true
-        segment size: blank: false
+        name blank: false, unique: true
+        segment blank: false
     }
 }
 
