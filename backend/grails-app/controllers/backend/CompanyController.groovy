@@ -1,6 +1,7 @@
 package backend
 
 class CompanyController {
+    static responseFormats = ['json']
 // Convenção por configuração. MAGIA. Injeção de dependencia feita!
     CompanyService companyService
 
