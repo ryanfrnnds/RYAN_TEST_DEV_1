@@ -1,12 +1,9 @@
 package backend
 
 import grails.gorm.transactions.Transactional
-// Anotação deve ser utilizada quando conter transação em BANCO. Como estou fazendo em memória não seria necessária.
-// Tentei utilizar o H2 como referencia a seção 5.4 do link: https://guides.grails.org/creating-your-first-grails-app/guide/index.html 
-// Mas não conseguir fazer o uso do H2. Precisaria de tempo para entender e lê sobre as magias do GORM para entender melhor o fluxo de convenção sobre configuração.
-@Transactional
 class CompanyService {
-
+    
+    @Transactional(readOnly = true)
     def getStocks(company, numbersOfHoursUntilNow) {
         println "---------------------------------------------------------"
         println company + " "+ numbersOfHoursUntilNow
@@ -18,5 +15,17 @@ class CompanyService {
             println companyBD.name
         }
         */
+    }
+
+    @Transactional
+    def save(Company company) {
+        println "------------------SALVANDO------------------------------"
+        company.save(flush: true, failOnError: true);
+        println "-------------------TERMINADO------------------------------"
+    }
+
+     @Transactional(readOnly = true)
+    def findBy(String name) {
+        return Company.findByName(name);
     }
 }
