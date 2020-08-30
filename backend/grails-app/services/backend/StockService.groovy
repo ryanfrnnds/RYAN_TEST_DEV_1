@@ -49,6 +49,7 @@ class StockService {
             stocks.each {stock ->
                 println  stock.datePrice.format("dd/MM/yyyy HH:mm:ss") + " - "+ stock.price   
             }
+            
         // CONSIDERAÇÕES feitas no README -> Setor Análise item B.  
     }
 
