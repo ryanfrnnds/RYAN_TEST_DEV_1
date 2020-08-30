@@ -3,6 +3,7 @@ package backend
 import grails.gorm.transactions.Transactional
 
 import groovy.time.TimeCategory
+import groovy.json.JsonBuilder
 
 
 class StockService {
@@ -34,23 +35,55 @@ class StockService {
             dateWithNumbersOfHoursUntilNow= lastDateCreated-numbersOfHoursUntilNow.hours
         } 
         def stocks = Stock.createCriteria().list{
-                company{
-                    eq('name', companyName.toLowerCase(), [ignoreCase: true])
-                }
-                and {
-                    between('datePrice', dateWithNumbersOfHoursUntilNow,lastDateCreated ) 
-                }
-                order('datePrice', 'desc')
+            company{
+                eq('name', companyName.toLowerCase(), [ignoreCase: true])
             }
-            println "-------------------------"+companyName.toUpperCase()+"-------------------------------"
-            println "Total time: "+ ((new Date().getTime()) - initProcessMS)+" ms."
-            println "total of quotes: " + stocks.size()
-            println "quotes: "
-            stocks.each {stock ->
-                println  stock.datePrice.format("dd/MM/yyyy HH:mm:ss") + " - "+ stock.price   
+            and {
+                between('datePrice', dateWithNumbersOfHoursUntilNow,lastDateCreated ) 
             }
+            order('datePrice', 'desc')
+        }
+        println "-------------------------"+companyName.toUpperCase()+"-------------------------------"
+        println "Total time: "+ ((new Date().getTime()) - initProcessMS)+" ms."
+        println "total of quotes: " + stocks.size()
+        println "quotes: "
+        stocks.each {stock ->
+            println  stock.datePrice.format("dd/MM/yyyy HH:mm:ss") + " - "+ stock.price   
+        }
             
         // CONSIDERAÇÕES feitas no README -> Setor Análise item B.  
+    }
+
+    @Transactional(readOnly = true)
+    def getStandardDeviation(String companyName) {
+        def varianceSum  = 0
+        def averagePrice = Stock.createCriteria().list() {
+            projections {
+                avg "price"
+            }
+             company{
+                    eq('name', companyName.toLowerCase(), [ignoreCase: true])
+                }
+        } 
+
+         def stocks = Stock.createCriteria().list{
+            company{
+                eq('name', companyName.toLowerCase(), [ignoreCase: true])
+            }
+        }
+
+        stocks.each {stock ->
+            varianceSum  = varianceSum  + Math.pow((stock.price - averagePrice), 2)
+        }
+        def variance  = varianceSum/stocks.size()
+        def standartDeviation = Math.sqrt(variance)
+        
+        def stockDTO = new LinkedHashMap();
+        stockDTO.company = stocks[0].company.name
+        stockDTO.segment = stocks[0].company.segment
+        stockDTO.standartDeviation = standartDeviation
+        
+        return stockDTO
     }
 
 
