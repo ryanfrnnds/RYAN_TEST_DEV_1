@@ -4,7 +4,6 @@ import groovy.time.TimeCategory
 
 class BootStrap {
     
-    CompanyService companyService
     StockService stockService
     def init = { servletContext ->
     /* Este formato de inserção por create-drop torna bem lento o desenvolvimento.
