@@ -2,7 +2,7 @@ package backend
 
 import grails.databinding.BindingFormat
 class Stock {
-    @BindingFormat('dd/MM/yy HH:mm:ss')
+    Long id
     Date datePrice //Idela seria utilizar o LocalDateTime. Mas não fui atraz de adicionalo a LIB
     BigDecimal price
     static belongsTo = [company: Company]

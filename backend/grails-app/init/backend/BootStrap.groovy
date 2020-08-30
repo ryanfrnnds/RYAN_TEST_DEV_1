@@ -5,21 +5,22 @@ import groovy.time.TimeCategory
 class BootStrap {
     
     StockService stockService
+    
     def init = { servletContext ->
     /* Este formato de inserção por create-drop torna bem lento o desenvolvimento.
      Preferiria ter feito de alguma outra forma. Por exemplo com dataSet ja definido para um ambiente
      de teste. Uma instancia de um BANCO com os dados já existentes... Apesar de eu tentar melhora no insert com BATCH
      */
-        Company railroad = BootStrap.createCompany("railroad".toUpperCase(),"land vehicles".toUpperCase());
-        Stock[] stocksRailroad = BootStrap.createStockQuotes(railroad);
-        stockService.save(stocksRailroad);
-
-        /*
-        Company carriers = BootStrap.createCompany("carriers".toUpperCase(),"land vehicles".toUpperCase());
-        Stock[] stocksCarriers = BootStrap.createStockQuotes(carriers);
-        stockService.save(stocksCarriers);
-        companyService.save(BootStrap.createCompany("navigation".toUpperCase(),"floating vehicles".toUpperCase()))
-        */
+        Company railroad = BootStrap.createCompany("railroad".toUpperCase(),"land vehicles".toUpperCase())
+        Stock[] stocksRailroad = BootStrap.createStockQuotes(railroad)
+        stockService.save(stocksRailroad)
+        
+        Company carriers = BootStrap.createCompany("carriers".toUpperCase(),"land vehicles".toUpperCase())
+        Stock[] stocksCarriers = BootStrap.createStockQuotes(carriers)
+        stockService.save(stocksCarriers)
+        Company navigation = BootStrap.createCompany("navigation".toUpperCase(),"floating vehicles".toUpperCase())
+        Stock[] stocksNavigation= BootStrap.createStockQuotes(navigation)
+        stockService.save(stocksNavigation)
     }
     def destroy = {}
 
@@ -34,17 +35,13 @@ class BootStrap {
     private static Stock[] createStockQuotes(Company company ) {
         def stocks = [];
         Date today = new Date()
-        today.set(hourOfDay: 18, minute: 1, second: 0)
+        today.set(hourOfDay: 18, minute: 0, second: 0)
         Date last30Days = today.plus(-29)
         Date init = last30Days;
         BootStrap.setFirstHours(init)
         boolean isDayChange = false;
 
         while (init < today) {
-            def isBreakTime = init.getHours() == 12
-            if(isBreakTime) {
-                init.set(hourOfDay: 13, minute: 0, second: 0)
-            }
             use (TimeCategory) {
                 if (isDayChange) {
                     BootStrap.setFirstHours(init)
@@ -66,7 +63,7 @@ class BootStrap {
                     init = init+1.minute
                     def hoursChange = hours != init.getHours()
                     
-                    def isLastMinute = init.getHours() == 18 && init.getMinutes() == 1
+                    def isLastMinute = init.getHours() == 18
                     if(isLastMinute) {
                         isDayChange = true
                     } 
