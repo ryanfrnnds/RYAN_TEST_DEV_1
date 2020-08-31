@@ -1,11 +1,3 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
@@ -94,5 +86,11 @@
   <!-- Next Steps -->
   <h2>Next Steps</h2>
   <p>You can do the <a href ='https://bitbucket.org/nitryx-team/rh-dev-1/wiki/Home#markdown-header-33-task-3' target="_blank">task #3</a> here</p>
+
+  <button (click)="task3(); cliked = true" > Click here for task3 </button>
+
+  <span *ngIf = cliked>
+    Check your browser console - click the f12 button on your keyboard and click on the 'console' tab
+  </span>
 
 <router-outlet></router-outlet>
