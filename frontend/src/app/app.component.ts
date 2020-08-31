@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
 
   task3() {
     this.service.getCompanies().subscribe(result => {
-      console.log(result);
     })
   }
 }

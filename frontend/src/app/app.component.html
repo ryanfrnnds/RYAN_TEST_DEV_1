@@ -92,7 +92,7 @@ Algumas boas práticas poderiam ser aplicadas aqui. Como por exemplo um LOADING 
 o que evitaria a possibilidade de vários clicks infinitos no botão. Podendo causar alguma confusão no BACK.
   -->
 
-  <button (click)="task3(); cliked = true" > GET COMPANIES </button>
+  <button data-cy="getCompanies" (click)="task3(); cliked = true" > GET COMPANIES </button>
 
   <span *ngIf = cliked>
     Check your browser console - click the f12 button on your keyboard and click on the 'console' tab

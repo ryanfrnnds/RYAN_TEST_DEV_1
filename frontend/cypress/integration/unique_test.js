@@ -9,6 +9,20 @@ No need to check all the data retrieved by the button pushing. Just a Company na
 describe('Test to be fulfilled by the candidate', () => {
   it('push the button implemented on task #3 and shows the company names', () => {
       cy.visit('http://localhost:4200')
-      expect(true).to.equal(false) //replace me !
+      cy.server()
+      cy.route({
+        method: 'GET',
+        url: 'http://localhost:8080/company/standartDeviations',
+      }).as('companies')
+
+      cy.get('[data-cy=getCompanies]').click()
+
+      cy.wait('@companies').then((xhr) => {
+        let companies = xhr.response.body;
+        expect(companies.length).to.equal(3)
+        expect(companies[0].company.toUpperCase()).to.equal('railroad'.toUpperCase())
+        expect(companies[1].company.toUpperCase()).to.equal('carriers'.toUpperCase())
+        expect(companies[2].company.toUpperCase()).to.equal('navigation'.toUpperCase())
+      })
   })
 })
